@@ -17,9 +17,20 @@ const sizes = {
 const scene = new THREE.Scene()
 
 // Object
-const cubeGeometry = new THREE.BoxGeometry(1,1,1)
-const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00})
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+// const cubeGeometry = new THREE.BoxGeometry(1,1,1)
+const count = 50
+const positionsArray = new Float32Array(count * 3 * 3)
+
+for(let i=0; i<positionsArray.length; i++){
+    positionsArray[i] = (Math.random() - 0.5) * 2
+}
+
+const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
+const geometry = new THREE.BufferGeometry()
+geometry.setAttribute('position', positionsAttribute)
+const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true})
+const cube = new THREE.Mesh(geometry, cubeMaterial)
 scene.add(cube)
 
 // GSAP
@@ -67,7 +78,8 @@ const animate = () => {
     // cube.position.x = Math.sin(elapsedTime)
     // cube.position.y = Math.cos(elapsedTime)
     
-    cube.rotation.y = elapsedTime
+    // cube.rotation.y = elapsedTime
+    
     controls.update()
     renderer.setSize(sizes.width, sizes.height)
     requestAnimationFrame(animate)
